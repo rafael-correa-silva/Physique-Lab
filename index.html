@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhysiqueLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/bodymap.css">
+  <link rel="stylesheet" href="css/history.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-inner">
+    <div class="loading-logo">Physique<span>Lab</span></div>
+    <div class="loading-bar"><div class="loading-fill"></div></div>
+    <p class="loading-sub">inicializando sistema</p>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="profile-modal" class="modal">
+  <div class="modal-overlay"></div>
+  <div class="modal-box glass-card">
+    <div class="modal-logo">Physique<span>Lab</span></div>
+    <h2 class="modal-title">Configure seu perfil</h2>
+    <p class="modal-desc">Dados necessários para cálculos precisos</p>
+    <form id="profile-form" class="modal-form">
+      <div class="form-group">
+        <label for="profile-name">Nome Completo</label>
+        <input type="text" id="profile-name" placeholder="Seu nome" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="profile-sex">Sexo Biológico</label>
+          <select id="profile-sex" required>
+            <option value="">Selecione</option>
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="profile-birthdate">Nascimento</label>
+          <input type="date" id="profile-birthdate" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="profile-height">Altura (cm)</label>
+        <input type="number" id="profile-height" min="100" max="250" placeholder="Ex: 178" required>
+      </div>
+      <button type="submit" class="btn-primary btn-full">Salvar e Começar</button>
+    </form>
+  </div>
+</div>
+
+<!-- INPUT MODAL -->
+<div id="input-modal" class="modal">
+  <div class="modal-overlay"></div>
+  <div class="modal-box glass-card compact">
+    <div class="compact-head">
+      <span class="compact-icon" id="input-modal-icon">⬤</span>
+      <h3 id="input-modal-title">Inserir medida</h3>
+      <button class="btn-close" id="input-modal-close">&#10005;</button>
+    </div>
+    <form id="input-form">
+      <div class="form-group">
+        <label id="input-label">Valor</label>
+        <div class="input-unit-wrap">
+          <input type="number" id="input-value" step="0.1" min="0" autocomplete="off" required>
+          <span class="unit-badge" id="input-unit">cm</span>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost-red" id="input-clear">Limpar</button>
+        <button type="submit" class="btn-primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="app hidden">
+
+  <!-- HEADER -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner" id="header-inner">
+      <div class="brand">
+        <h1 class="logo">Physique<span>Lab</span></h1>
+        <p class="tagline">evolução corporal inteligente</p>
+      </div>
+      <nav class="main-nav" id="main-nav">
+        <a href="#dashboard"  class="nav-link active" data-target="dashboard">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a href="#assessment" class="nav-link" data-target="assessment">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Avaliação
+        </a>
+        <a href="#history"    class="nav-link" data-target="history">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Histórico
+        </a>
+      </nav>
+      <div class="header-right">
+        <div class="user-chip">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span id="header-user-name">—</span>
+          <button class="btn-edit" id="edit-profile-btn" title="Editar perfil">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 2 4 4-14 14H4v-4L18 2z"/></svg>
+          </button>
+        </div>
+        <span class="header-date" id="current-date"></span>
+      </div>
+    </div>
+    <div class="scroll-progress-bar" id="scroll-bar"></div>
+  </header>
+
+  <!-- PAGE -->
+  <main class="page-main">
+
+    <!-- ════ DASHBOARD ════ -->
+    <section id="dashboard" class="page-section">
+      <div class="section-head">
+        <div class="section-title-group">
+          <h2 class="section-title">Dashboard</h2>
+          <p class="section-sub">Resumo da avaliação atual</p>
+        </div>
+        <div class="section-actions">
+          <button class="btn-secondary" id="new-assessment-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nova Avaliação
+          </button>
+          <button class="btn-primary" id="save-assessment-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+            Salvar
+          </button>
+        </div>
+      </div>
+
+      <div class="dashboard-layout">
+        <div class="weight-block glass-card">
+          <div class="weight-label-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Peso Corporal
+          </div>
+          <div class="weight-input-row">
+            <input type="number" id="weight-input" step="0.1" min="30" max="300" placeholder="00.0">
+            <span class="weight-unit">kg</span>
+          </div>
+          <p class="weight-hint">Insira seu peso atual em quilogramas</p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card glass-card" data-color="cyan">
+            <div class="metric-top">
+              <span class="metric-label">IMC</span>
+              <div class="metric-dot cyan"></div>
+            </div>
+            <span class="metric-value" id="bmi-value">--</span>
+            <span class="metric-status" id="bmi-status">Aguardando peso</span>
+          </div>
+          <div class="metric-card glass-card" data-color="orange">
+            <div class="metric-top">
+              <span class="metric-label">% Gordura</span>
+              <div class="metric-dot orange"></div>
+            </div>
+            <span class="metric-value" id="bodyfat-value">--</span>
+            <span class="metric-status" id="bodyfat-status">Preencha as dobras</span>
+          </div>
+          <div class="metric-card glass-card" data-color="green">
+            <div class="metric-top">
+              <span class="metric-label">Massa Magra</span>
+              <div class="metric-dot green"></div>
+            </div>
+            <span class="metric-value" id="leanmass-value">-- kg</span>
+            <span class="metric-status">Calculado auto</span>
+          </div>
+          <div class="metric-card glass-card" data-color="purple">
+            <div class="metric-top">
+              <span class="metric-label">Massa Gorda</span>
+              <div class="metric-dot purple"></div>
+            </div>
+            <span class="metric-value" id="fatmass-value">-- kg</span>
+            <span class="metric-status">Calculado auto</span>
+          </div>
+          <div class="metric-card glass-card" data-color="red">
+            <div class="metric-top">
+              <span class="metric-label">Cin/Quadril</span>
+              <div class="metric-dot red"></div>
+            </div>
+            <span class="metric-value" id="rcq-value">--</span>
+            <span class="metric-status" id="rcq-status">Preencha medidas</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="disclaimer">
+        ⓘ Estimativas por Jackson &amp; Pollock (7 dobras) e Siri (1956). Não substituem avaliação profissional.
+      </p>
+    </section>
+
+    <div class="sec-divider"><span>Avaliação Corporal</span></div>
+
+    <!-- ════ ASSESSMENT ════ -->
+    <section id="assessment" class="page-section">
+      <div class="section-head">
+        <div class="section-title-group">
+          <h2 class="section-title">Avaliação Corporal</h2>
+          <p class="section-sub">Clique nas regiões para inserir os dados</p>
+        </div>
+      </div>
+
+      <div class="maps-grid">
+        <!-- MAP 1 - Medidas -->
+        <div class="map-panel glass-card">
+          <div class="map-panel-header">
+            <span class="panel-badge cyan">Medidas</span>
+            <span class="panel-unit">cm</span>
+          </div>
+          <div class="map-body">
+            <div class="svg-container" id="measurements-svg-container"></div>
+            <div class="data-table-wrap">
+              <table class="data-table" id="measurements-table">
+                <thead><tr><th>Região</th><th>Valor</th></tr></thead>
+                <tbody>
+                  <tr data-region="shoulder">  <td>Ombro</td>       <td class="val-cell" id="mt-shoulder">--</td></tr>
+                  <tr data-region="arm">       <td>Braço</td>      <td class="val-cell" id="mt-arm">--</td></tr>
+                  <tr data-region="forearm">   <td>Antebraço</td>  <td class="val-cell" id="mt-forearm">--</td></tr>
+                  <tr data-region="chest">     <td>Peito</td>       <td class="val-cell" id="mt-chest">--</td></tr>
+                  <tr data-region="waist">     <td>Cintura</td>     <td class="val-cell" id="mt-waist">--</td></tr>
+                  <tr data-region="abdomen">   <td>Abdômen</td>    <td class="val-cell" id="mt-abdomen">--</td></tr>
+                  <tr data-region="hip">       <td>Quadril</td>     <td class="val-cell" id="mt-hip">--</td></tr>
+                  <tr data-region="thigh">     <td>Coxa</td>        <td class="val-cell" id="mt-thigh">--</td></tr>
+                  <tr data-region="calf">      <td>Panturrilha</td><td class="val-cell" id="mt-calf">--</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAP 2 - Adipometria -->
+        <div class="map-panel glass-card">
+          <div class="map-panel-header">
+            <span class="panel-badge orange">Adipometria</span>
+            <span class="panel-unit">mm</span>
+          </div>
+          <div class="map-body">
+            <div class="svg-container" id="skinfolds-svg-container"></div>
+            <div class="data-table-wrap">
+              <table class="data-table" id="skinfolds-table">
+                <thead><tr><th>Dobra</th><th>Valor</th></tr></thead>
+                <tbody>
+                  <tr data-region="triceps">      <td>Tríceps</td>      <td class="val-cell" id="sf-triceps">--</td></tr>
+                  <tr data-region="pectoral">     <td>Peitoral</td>     <td class="val-cell" id="sf-pectoral">--</td></tr>
+                  <tr data-region="subscapular">  <td>Subescapular</td> <td class="val-cell" id="sf-subscapular">--</td></tr>
+                  <tr data-region="abdominal">    <td>Abdominal</td>    <td class="val-cell" id="sf-abdominal">--</td></tr>
+                  <tr data-region="suprailiac">   <td>Supra-ilíaca</td> <td class="val-cell" id="sf-suprailiac">--</td></tr>
+                  <tr data-region="thighSkinfold"><td>Coxa</td>         <td class="val-cell" id="sf-thighSkinfold">--</td></tr>
+                  <tr data-region="midaxillary">  <td>Axilar Média</td> <td class="val-cell" id="sf-midaxillary">--</td></tr>
+                </tbody>
+              </table>
+              <div class="sum-bar">
+                <span>Σ 7 dobras</span>
+                <span id="skinfolds-sum" class="sum-val">-- mm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="sec-divider"><span>Histórico e Evolução</span></div>
+
+    <!-- ════ HISTORY ════ -->
+    <section id="history" class="page-section">
+      <div class="section-head">
+        <div class="section-title-group">
+          <h2 class="section-title">Histórico</h2>
+          <p class="section-sub">Acompanhe sua evolução ao longo do tempo</p>
+        </div>
+        <button class="btn-secondary" id="export-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exportar PDF
+        </button>
+      </div>
+
+      <div class="chart-block glass-card">
+        <div class="chart-tabs" id="chart-tabs">
+          <button class="chart-tab active" data-metric="weight">Peso (kg)</button>
+          <button class="chart-tab" data-metric="bodyfat">% Gordura</button>
+          <button class="chart-tab" data-metric="leanmass">Massa Magra</button>
+          <button class="chart-tab" data-metric="bmi">IMC</button>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="evolution-chart"></canvas>
+          <div class="chart-empty-state" id="chart-empty">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <p>Salve sua primeira avaliação para ver a evolução</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-block">
+        <div class="history-block-header">
+          <h3 class="block-title">Avaliações Salvas</h3>
+          <button class="btn-secondary" id="compare-btn" style="display:none">Comparar</button>
+        </div>
+        <div id="history-list" class="history-list">
+          <div class="empty-state">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <p>Nenhuma avaliação salva ainda</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-block glass-card" id="compare-block" style="display:none">
+        <h3 class="block-title">Comparar Avaliações</h3>
+        <div class="compare-selects">
+          <select id="compare-a" class="compare-select"><option value="">— Selecione —</option></select>
+          <div class="vs-badge">vs</div>
+          <select id="compare-b" class="compare-select"><option value="">— Selecione —</option></select>
+        </div>
+        <div id="compare-results" class="compare-results"></div>
+      </div>
+
+    </section>
+  </main>
+
+  <div id="tooltip" class="tooltip-pop"></div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

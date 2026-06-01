@@ -1,0 +1,193 @@
+/* ============================================================
+   PhysiqueLab — history.css
+   Charts, lista de histórico, comparação
+   ============================================================ */
+
+/* ── Chart block ─────────────────────────────────────────── */
+.chart-block {
+  padding: 1.4rem;
+  margin-bottom: 2rem;
+}
+.chart-tabs {
+  display: flex; gap: .4rem;
+  margin-bottom: 1.4rem; flex-wrap: wrap;
+}
+.chart-tab {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--r-sm); color: var(--tx-2);
+  font-size: .78rem; font-weight: 500; padding: .38rem .9rem;
+  cursor: pointer; transition: all var(--t-fast);
+  font-family: var(--font-body);
+}
+.chart-tab:hover { color: var(--tx-1); border-color: var(--accent); }
+.chart-tab.active {
+  background: var(--accent-dim); border-color: rgba(0,212,255,.3);
+  color: var(--accent);
+}
+.chart-canvas-wrap {
+  position: relative; height: 240px;
+}
+.chart-canvas-wrap canvas { height: 100% !important; }
+.chart-empty-state {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: .8rem; color: var(--tx-3);
+}
+.chart-empty-state p { font-size: .82rem; }
+
+/* ── History block ───────────────────────────────────────── */
+.history-block { margin-bottom: 2rem; }
+.history-block-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.block-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 600;
+  color: var(--tx-1); letter-spacing: .03em;
+}
+
+.history-list { display: flex; flex-direction: column; gap: .7rem; }
+
+.empty-state {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: .7rem; padding: 2.5rem;
+  color: var(--tx-3);
+  background: var(--bg-1); border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+}
+.empty-state p { font-size: .82rem; }
+
+/* ── History item ────────────────────────────────────────── */
+.history-item {
+  background: var(--glass-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  transition: border-color var(--t-fast);
+  backdrop-filter: blur(12px);
+}
+.history-item:hover { border-color: rgba(0,212,255,.18); }
+
+.history-item-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 1.2rem;
+  cursor: pointer; gap: 1rem;
+}
+.history-item-left {
+  display: flex; align-items: center; gap: .9rem;
+}
+.history-num {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  border: 1px solid rgba(0,212,255,.25);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: .72rem; font-weight: 700;
+  color: var(--accent); flex-shrink: 0;
+}
+.history-date {
+  font-family: var(--font-display);
+  font-size: .95rem; font-weight: 600; color: var(--tx-1);
+}
+.history-meta-chips { display: flex; gap: .4rem; flex-wrap: wrap; }
+.history-chip {
+  font-size: .65rem; padding: .18rem .55rem;
+  border-radius: 10px; font-weight: 500;
+  background: var(--bg-3); color: var(--tx-2);
+  border: 1px solid var(--border);
+}
+.history-item-right { display: flex; align-items: center; gap: .6rem; }
+.history-toggle {
+  font-size: .7rem; color: var(--tx-3);
+  transition: transform var(--t-mid);
+}
+.history-item.expanded .history-toggle { transform: rotate(180deg); }
+
+.btn-icon-danger {
+  background: none; border: 1px solid transparent;
+  border-radius: var(--r-sm); color: var(--tx-3);
+  font-size: .72rem; padding: .2rem .5rem;
+  cursor: pointer; transition: all var(--t-fast);
+}
+.btn-icon-danger:hover { border-color: var(--red); color: var(--red); }
+
+.history-detail {
+  display: none; padding: 0 1.2rem 1.2rem;
+  border-top: 1px solid var(--border);
+}
+.history-item.expanded .history-detail { display: block; }
+
+.detail-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem; padding-top: 1rem;
+}
+.detail-section h4 {
+  font-size: .62rem; text-transform: uppercase;
+  letter-spacing: .09em; color: var(--tx-3);
+  margin-bottom: .6rem;
+}
+.detail-kv { display: flex; flex-direction: column; gap: .3rem; }
+.detail-row {
+  display: flex; justify-content: space-between;
+  font-size: .78rem; padding: .22rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.03);
+}
+.detail-row span:first-child { color: var(--tx-2); }
+.detail-row span:last-child {
+  font-family: var(--font-display);
+  font-weight: 600; color: var(--tx-1);
+}
+
+/* ── Compare block ───────────────────────────────────────── */
+.compare-block { padding: 1.6rem; }
+.compare-block .block-title { margin-bottom: 1.2rem; }
+.compare-selects {
+  display: flex; align-items: center; gap: 1rem;
+  flex-wrap: wrap; margin-bottom: 1.4rem;
+}
+.compare-select {
+  flex: 1; min-width: 180px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--r-sm); color: var(--tx-1);
+  font-size: .85rem; padding: .58rem .9rem; outline: none;
+  transition: border-color var(--t-fast);
+}
+.compare-select:focus { border-color: var(--accent); }
+.vs-badge {
+  font-family: var(--font-display);
+  font-size: .9rem; font-weight: 700;
+  color: var(--tx-3); flex-shrink: 0;
+}
+
+.compare-results { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.compare-group h4 {
+  font-size: .62rem; text-transform: uppercase;
+  letter-spacing: .09em; color: var(--tx-3);
+  margin-bottom: .6rem;
+}
+.compare-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .3rem 0; border-bottom: 1px solid rgba(255,255,255,.04);
+  font-size: .8rem;
+}
+.compare-row .cr-label { color: var(--tx-2); }
+.compare-delta {
+  font-family: var(--font-display);
+  font-size: .85rem; font-weight: 700;
+  padding: .12rem .45rem; border-radius: 4px;
+}
+.compare-delta.positive { color: var(--green); background: var(--green-dim); }
+.compare-delta.negative { color: var(--red);   background: var(--red-dim); }
+.compare-delta.neutral  { color: var(--tx-2);  background: var(--bg-3); }
+
+@media (max-width: 700px) {
+  .detail-grid { grid-template-columns: 1fr; }
+  .compare-results { grid-template-columns: 1fr; }
+  .compare-selects { flex-direction: column; }
+  .compare-select { width: 100%; }
+}

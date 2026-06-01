@@ -1,0 +1,118 @@
+/* ============================================================
+   PhysiqueLab — dashboard.css
+   Cards de métricas, peso, layout do dashboard
+   ============================================================ */
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+/* ── Weight block ────────────────────────────────────────── */
+.weight-block {
+  padding: 1.6rem;
+  position: relative; overflow: hidden;
+}
+.weight-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: .5;
+}
+.weight-label-row {
+  display: flex; align-items: center; gap: .45rem;
+  font-size: .72rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: var(--tx-2); margin-bottom: 1rem;
+}
+.weight-input-row {
+  display: flex; align-items: baseline; gap: .5rem;
+  margin-bottom: .6rem;
+}
+#weight-input {
+  background: transparent; border: none;
+  font-family: var(--font-display);
+  font-size: 3.2rem; font-weight: 700;
+  color: var(--tx-1); width: 120px;
+  outline: none; padding: 0;
+  letter-spacing: .02em;
+}
+#weight-input::placeholder { color: var(--tx-3); }
+.weight-unit {
+  font-family: var(--font-display);
+  font-size: 1.2rem; font-weight: 600;
+  color: var(--accent);
+}
+.weight-hint { font-size: .7rem; color: var(--tx-3); }
+
+/* ── Metrics grid ────────────────────────────────────────── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: .9rem;
+}
+
+.metric-card {
+  padding: 1.2rem 1.1rem;
+  display: flex; flex-direction: column; gap: .5rem;
+  position: relative; overflow: hidden;
+  transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+  cursor: default;
+}
+.metric-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  opacity: 0; transition: opacity var(--t-mid);
+}
+.metric-card:hover { transform: translateY(-2px); }
+.metric-card[data-color="cyan"]::after   { background: var(--accent); }
+.metric-card[data-color="orange"]::after { background: var(--orange); }
+.metric-card[data-color="green"]::after  { background: var(--green); }
+.metric-card[data-color="purple"]::after { background: var(--purple); }
+.metric-card[data-color="red"]::after    { background: var(--red); }
+.metric-card:hover::after { opacity: 1; }
+
+.metric-top {
+  display: flex; align-items: center;
+  justify-content: space-between;
+}
+.metric-label {
+  font-size: .65rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: var(--tx-2);
+}
+.metric-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.metric-dot.cyan   { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.metric-dot.orange { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+.metric-dot.green  { background: var(--green);  box-shadow: 0 0 8px var(--green); }
+.metric-dot.purple { background: var(--purple); box-shadow: 0 0 8px var(--purple); }
+.metric-dot.red    { background: var(--red);    box-shadow: 0 0 8px var(--red); }
+
+.metric-value {
+  font-family: var(--font-display);
+  font-size: 1.7rem; font-weight: 700;
+  color: var(--tx-1); line-height: 1;
+  letter-spacing: .02em;
+}
+.metric-status {
+  font-size: .65rem; color: var(--tx-3);
+  font-style: italic;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .dashboard-layout { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .metric-card[data-color="red"] { grid-column: span 2; }
+}

@@ -1,0 +1,64 @@
+/* ============================================================
+   PhysiqueLab — print.css
+   Estilos para exportação em PDF via window.print()
+   ============================================================ */
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 11pt;
+  }
+
+  .site-header,
+  .main-nav,
+  .sec-divider,
+  .section-actions,
+  #export-btn,
+  #save-assessment-btn,
+  #new-assessment-btn,
+  #edit-profile-btn,
+  .chart-tabs,
+  #compare-block,
+  .history-block-header button,
+  .btn-icon-danger,
+  .history-toggle,
+  .loading-screen,
+  .modal,
+  .tooltip-pop,
+  .toast { display: none !important; }
+
+  .page-main { padding: 0; max-width: 100%; }
+  .glass-card {
+    background: #f8f9fa !important;
+    border: 1px solid #dde !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  .section-title { color: #111 !important; }
+  .section-sub   { color: #555 !important; }
+  .tx-1, .tx-2  { color: #111 !important; }
+  .metric-label, .metric-status { color: #555 !important; }
+  .metric-value { color: #111 !important; }
+
+  .maps-grid { grid-template-columns: 1fr 1fr; gap: 1cm; }
+
+  .body-base    { fill: #e8edf2 !important; stroke: #999 !important; }
+  .body-detail, .body-detail-hi { stroke: #bbb !important; }
+  .body-region  { fill: #dde8f0 !important; stroke: #89aacc !important; }
+  .body-region.filled { fill: #b8d8ee !important; stroke: #3a7db5 !important; }
+  .region-val-text { fill: #1a5c8a !important; }
+  .region-val-line { stroke: #89aacc !important; }
+
+  .skinfold-marker circle { fill: #e0eef8 !important; stroke: #3a7db5 !important; }
+  .skinfold-marker text   { fill: #1a5c8a !important; }
+
+  .data-table td, .data-table th { color: #333 !important; }
+  .val-cell.has-value { color: #1a5c8a !important; }
+
+  .history-item { break-inside: avoid; }
+  .history-detail { display: block !important; }
+
+  @page { margin: 1.5cm; size: A4; }
+}
